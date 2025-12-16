@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Barbearia Estilo MK - Agendamento</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDocs,
+            doc,
+            deleteDoc,
+            setDoc,
+            query,
+            where
+        } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDONyV3DlGTSiAVQUxmMQ0ka3dNknY3er0",
+            authDomain: "barbearia-mk.firebaseapp.com",
+            projectId: "barbearia-mk",
+            storageBucket: "barbearia-mk.firebasestorage.app",
+            messagingSenderId: "713393544662",
+            appId: "1:713393544662:web:9881a05a7cf206f15d9877"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window._firebase = { collection, addDoc, getDocs, doc, deleteDoc, setDoc, query, where };
+    </script>
+</head>
+
+<body>
+    <canvas id="fundoParticulas"></canvas>
+
+    <header>
+        <img src="img/LogoMK.jpg" class="img-logo" />
+    </header>
+
+    <header class="informacoes">
+        <a href="index.html">Informações</a>
+        <a href="agendar.html" class="active">Agendar</a>
+    </header>
+
+    <div class="agendamento-principal-container">
+
+        <div class="barbeiros-painel">
+            <h2 class="painel-titulo">Escolha o Barbeiro</h2>
+            <div id="listaBarbeiros" class="barbeiros-container profissional">
+                <div class="barbeiro-card" data-barbeiro="Lisboa - MK">
+                    <img src="img/barbeiro1.jpeg" />
+                    <p>Lisboa - MK</p>
+                </div>
+
+                <div class="barbeiro-card" data-barbeiro="Marcos - MC">
+                    <img src="img/barbeiro2.jpeg" />
+                    <p>Marcos - MC</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="agendar" class="info-box agendamento-form" style="display:block;">
+            <h2>Detalhes do Agendamento</h2>
+
+            <input type="hidden" id="barbeiroSelecionado" />
+
+            <label for="servicoAgendamento">Serviço</label>
+            <select id="servicoAgendamento"></select>
+
+            <div class="data-hora-group">
+                <div class="input-group">
+                    <label for="dataAgendamento">Data</label>
+                    <input id="dataAgendamento" type="date" />
+                </div>
+
+                <div class="input-group">
+                    <label for="horaAgendamento">Horário disponível</label>
+                    <select id="horaAgendamento">
+                        <option value="">Selecione a data primeiro</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="nomeAgendamento">Seu nome</label>
+            <input id="nomeAgendamento" type="text" placeholder="Nome e sobrenome" />
+
+            <label for="telefoneAgendamento">Telefone (para confirmar)</label>
+            <input id="telefoneAgendamento" type="tel" placeholder="(85) 9xxxx-xxxx" />
+
+            <button id="btnConfirmarAgendamento">Confirmar e Enviar (WhatsApp)</button>
+            <p id="resultadoAgendamento"></p>
+
+            <hr style="margin:12px 0; border-color:#ffffff22;" />
+
+            <button onclick="abrirPainelAgendamentos()"              
+            style="background:transparent; border:1px solid #B68820; color:#28a745;
+            padding:10px; border-radius:8px; cursor:pointer;
+            width:100%; margin-top:10px; font-family:'Russo One', sans-serif;">
+            Horários Agendados
+            </button>
+
+            <button onclick="abrirControleDias()"
+              style="background:transparent; border:1px solid #B68820; color:#28a745;
+            padding:10px; border-radius:8px; cursor:pointer;
+            width:100%; margin-top:10px; font-family:'Russo One', sans-serif;">
+                Controle de Dias (ADMIN)
+            </button>
+
+            <div id="adminBlocker" class="info-box" style="display: none; margin-top: 20px; background: #002C59;">
+                <h3 style="color:#B68820; margin-bottom:15px;">🔒 Controle de Dias (ADMIN)</h3>
+                
+                <input type="date" id="block-date-input" 
+                    style="padding:12px; border-radius:6px; border:1px solid #B68820; background:#fff; color:#000; margin-bottom:10px; width:100%;">
+
+            <button onclick="handleAdminDayBlock('block')"
+              style="background:#c0392b; border:none; color:white;
+             padding:10px; border-radius:8px; cursor:pointer;
+              width:100%; margin-bottom:12px;
+             font-family:'Russo One', sans-serif;">
+                BLOQUEAR DIA
+            </button>
+
+
+
+                <div id="blocked-days-list"></div>
+            </div>
+
+            <div id="painelAgendamentos" class="info-box" style="display: none; margin-top: 20px; background: #002C59; max-height:60vh; overflow:auto;">
+                <h2 style="color:#B68820; margin-bottom:15px;">Painel de Agendamentos</h2>
+                <div id="listaAgendamentos"></div>
+                <p style="font-size:13px; color:#ddd; margin-top:10px; text-align:center;">
+                    Use o botão EXCLUIR para liberar o horário.
+                </p>
+            </div>
+        </div> 
+    </div> 
+    <script type="module" src="scripts.js"></script>
+</body>
+</html>

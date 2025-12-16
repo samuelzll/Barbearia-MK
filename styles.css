@@ -1,0 +1,806 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Russo One", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+header {
+  display: flex;
+  justify-content: baseline;
+  align-items: flex-start;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+/* ============================= */
+/* PADRÃO GLOBAL DE TIPOGRAFIA  */
+/* ============================= */
+/* Títulos principais */
+h1,
+.titulo {
+  font-family: "Russo One", sans-serif;
+  font-weight: 700;
+  color: #B68820;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* h1 grande */
+h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+/* h2 menor e forte */
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #B68820;
+  text-transform: uppercase;
+}
+
+/* Parágrafos */
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+/* Para textos dentro de caixas escuras */
+.info-box p,
+#agendar p,
+.item-info {
+  color: #f1f1f1;
+}
+
+.img-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.titulo {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-size: 56px;
+  color: #B68820;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Miniaturas */
+.miniaturas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.miniaturas img {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.6;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.miniaturas img:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.miniaturas img.ativo {
+  opacity: 1;
+  border: 2px solid #c6a25e;
+}
+
+.informacoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  gap: 30px;
+  color: #B68820;
+  text-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+  font-size: 40px;
+  position: relative;
+  margin-left: 100px;
+  margin-top: -70px;
+}
+
+/* Estilo para Links do Menu .informacoes */
+.informacoes a {
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #B68820;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
+}
+
+/* Efeito ao passar o mouse */
+.informacoes a:hover {
+  color: #d4a74e;
+  border-bottom: 2px solid #d4a74e;
+  text-decoration: none;
+}
+
+/* Estilo para a aba ATIVA */
+.informacoes a.active {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* CAIXA DE INFORMAÇÕES */
+.info-box {
+  display: none;
+  padding: 15px;
+  margin-top: 10px;
+  background: #002C59;
+  color: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s ease-in-out;
+  height: auto;
+}
+
+@media screen and (max-width: 900px) {
+  body {
+    width: 100%;
+    height: 60%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .informacoes {
+    font-size: 20px;
+    gap: 10px;
+    flex-direction: row;
+    text-align: center;
+    margin-top: -65px;
+    margin-right: 40px;
+  }
+
+  .titulo {
+    font-size: 28px;
+    padding-top: 30px;
+    padding: 50px;
+    margin-left: -10px;
+  }
+
+  .img-logo {
+    width: 55px;
+    height: 55px;
+  }
+
+  body {
+    position: static;
+  }
+}
+
+/* Fonte do título */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+/* ============================= */
+/* APRESENTAÇÃO 1 — ARRUMADO     */
+/* ============================= */
+.apresentacao1 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px 5%;
+  color: white;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+/* TÍTULOS ACIMA DAS MÍDIAS */
+.nossa-barbearia,
+.texto-barbeiro {
+  font-size: 38px;
+  font-weight: 700;
+  color: #B68820;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* BLOCO DO VÍDEO */
+.video-box {
+  text-align: center;
+  max-width: 400px;
+}
+
+.video-box video {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* BLOCO DO BARBEIROS */
+.texto-box {
+  max-width: 420px;
+  text-align: center;
+}
+
+.img-barbeiros {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+.texto-pro {
+  font-size: 25px;
+  color: #ffffff;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.texto-pro:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================= */
+/* RESPONSIVO                    */
+/* ============================= */
+@media (max-width: 900px) {
+  .apresentacao1 {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .video-box,
+  .texto-box {
+    max-width: 100%;
+  }
+}
+
+.apresentacao2 {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;
+  padding: 20px;
+  flex-direction: row;
+  color: white;
+}
+
+.box {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+}
+
+.box h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #B68820;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.box p {
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* --- ESTILO ANTIGO FORMULÁRIO --- */
+#agendar h2 {
+  font-size: 24px;
+  color: #B68820;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* --- ESTILO NOVO FORMULÁRIO (sobrepõe o antigo) --- */
+
+/* =============================================== */
+/* ESTILIZAÇÃO PROFISSIONAL DO AGENDAMENTO         */
+/* =============================================== */
+
+/* CONTAINER PRINCIPAL (Barbeiros + Formulário lado a lado) */
+.agendamento-principal-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* PAINEL DE BARBEIROS */
+.barbeiros-painel {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  background: #002C59;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  height: fit-content;
+}
+
+.painel-titulo {
+  font-size: 24px;
+  color: #B68820;
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ffffff22;
+  padding-bottom: 10px;
+}
+
+/* LISTA DE BARBEIROS (Dentro do Barbeiros-Painel) */
+.barbeiros-container.profissional {
+  flex-direction: column;
+  gap: 15px;
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
+
+/* CARTÃO DE BARBEIRO */
+.barbeiro-card {
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: .3s ease;
+}
+
+.barbeiro-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 1px solid #ffffff44;
+  object-fit: cover;
+}
+
+.barbeiro-card p {
+  font-size: 16px;
+  margin-top: 0;
+  text-align: left;
+  color: #fff;
+  font-weight: normal;
+}
+
+.barbeiro-card.selecionado {
+  border: 2px solid #B68820;
+  background: rgba(182, 136, 32, 0.1);
+  box-shadow: 0 0 10px rgba(182, 136, 32, 0.5);
+}
+
+/* FORMULÁRIO DE AGENDAMENTO */
+.agendamento-form {
+  min-width: 350px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0;
+}
+
+/* GRUPO DATA E HORA LADO A LADO */
+.data-hora-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.input-group {
+  flex: 1;
+}
+
+/* Estilização dos inputs e selects */
+#agendar label {
+  display: block;
+  font-size: 15px;
+  margin: 10px 0 6px;
+  color: #fff;
+}
+
+#agendar input,
+#agendar select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #B68820;
+  background: rgba(0, 0, 0, 0.3);
+  color: #000000;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+#agendar input:focus,
+#agendar select:focus {
+  border-color: #B68820;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#agendar button#btnConfirmarAgendamento {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: #B68820;
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+#agendar button#btnConfirmarAgendamento:hover {
+  background: #d4a74e;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+#resultadoAgendamento {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+/* Painel */
+#painelAgendamentos h2 {
+  color: #B68820;
+  margin-bottom: 8px;
+}
+
+.item-agendamento {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.item-info {
+  font-size: 14px;
+  color: #eee;
+}
+
+.item-actions button {
+  background: transparent;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.item-actions button:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+/* Responsividade para o novo layout */
+@media (max-width: 900px) {
+  .agendamento-principal-container {
+    flex-direction: column;
+    /* Empilha painéis */
+    gap: 20px;
+    align-items: center;
+  }
+
+  .barbeiros-painel,
+  .agendamento-form {
+    max-width: 90%;
+    min-width: 0;
+  }
+
+  .barbeiros-container.profissional {
+    flex-direction: row;
+    /* Volta a deixar os cards de barbeiro lado a lado no mobile */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .barbeiro-card {
+    width: 130px;
+    /* Volta para o tamanho de card original no mobile */
+    flex-direction: column;
+
+  }
+
+  .barbeiro-card img {
+    width: 80px;
+    height: 80px;
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .barbeiro-card p {
+    text-align: center;
+  }
+
+  .data-hora-group {
+    flex-direction: column;
+    /* Empilha data e hora no mobile */
+    gap: 0;
+  }
+}
+
+
+/* --- CÓDIGO RESTANTE (antigo) --- */
+.barbeiros-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+/* REMOVIDO ESTILO BARBEIRO-CARD ANTIGO PARA EVITAR CONFLITO */
+
+/* ============================= */
+/* NOVO GRID DA GALERIA DE CORTES */
+/* ============================= */
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+  width: 90%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.galeria-grid img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.galeria-grid img:hover {
+  transform: scale(1.04);
+  border-color: #B68820;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .galeria-grid img {
+    height: 160px;
+  }
+}
+
+#fundoParticulas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background: #0f0f0f;
+  pointer-events: none;
+  display: block;
+}
+
+/* --- MOSAICO DE CORTES (estilo do exemplo enviado) --- */
+.cortes-section {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.mosaico-cortes {
+  width: 330px;
+  position: relative;
+  height: 430px;
+}
+
+.mosaico-cortes .foto {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  position: absolute;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 2px 5px #B68820;
+}
+
+.mosaico-cortes .foto:hover {
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+/* --- POSIÇÕES DAS FOTOS (estilo espalhado igual ao modelo) --- */
+.f1 {
+  top: 0;
+  left: 0;
+  transform: rotate(-3deg);
+}
+
+.f2 {
+  top: 0;
+  right: 0;
+  transform: rotate(2deg);
+}
+
+.f3 {
+  top: 140px;
+  left: 80px;
+  transform: rotate(-1deg);
+}
+
+.f4 {
+  top: 220px;
+  left: -10px;
+  transform: rotate(3deg);
+}
+
+.f5 {
+  top: 220px;
+  right: -10px;
+  transform: rotate(-2deg);
+}
+
+.f6 {
+  top: 320px;
+  left: 40px;
+  transform: rotate(2deg);
+}
+
+.f7 {
+  top: 320px;
+  right: 40px;
+  transform: rotate(-3deg);
+}
+
+.f8 {
+  top: 120px;
+  right: 110px;
+  transform: rotate(4deg);
+}
+
+.f9 {
+  top: 110px;
+  left: -40px;
+  transform: rotate(-4deg);
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 34px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .titulo {
+    font-size: 36px;
+    margin-top: 20px;
+  }
+
+  .nossa-barbearia,
+  .texto-barbeiro {
+    font-size: 28px;
+  }
+
+  .box h1 {
+    font-size: 24px;
+  }
+
+  p,
+  .box p {
+    font-size: 15px;
+  }
+}
+
+.mapa-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.mapa-container iframe {
+  width: 90%;
+  max-width: 600px;
+  height: 350px;
+  border: 0;
+  border-radius: 10px;
+}
+
+.como-chegar {
+  font-size: 28px;
+  color: #B68820;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .admin-wrapper {
+    flex-direction: column;
+  }
+}
+
+.item-dia-bloqueado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #1a3a5a; /* Cor azul da borda do seu print */
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+}
+
+.btn-remover-lista {
+    background-color: #4CAF50 !important; /* Verde do botão remover */
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    cursor: pointer;
+}
