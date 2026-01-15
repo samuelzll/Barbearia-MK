@@ -60,14 +60,11 @@ function salvar() {
  * PARCELAS AUTOMÁTICAS
  ************************************************/
 function gerarParcelas(tipo, item) {
-    if (!item.parcela || !item.parcela.includes("/")) return;
+    if (item.parcelas <= 1) return;
 
-    const [atual, total] = item.parcela.split("/").map(Number);
-    if (!total || total <= 1) return;
-
-    for (let i = 1; i < total; i++) {
+    for (let i = 2; i <= item.parcelas; i++) {
         const data = new Date(mesInput.value + "-01");
-        data.setMonth(data.getMonth() + i);
+        data.setMonth(data.getMonth() + (i - 1));
 
         const novoMes = data.toISOString().slice(0, 7);
 
@@ -79,13 +76,15 @@ function gerarParcelas(tipo, item) {
 
         futuro[tipo].push({
             desc: item.desc,
-            valor: item.valor,
-            parcela: `${atual + i}/${total}`
+            valor: item.valor,       // 🔥 mesmo valor
+            parcelas: item.parcelas,
+            parcelaAtual: i
         });
 
         localStorage.setItem(novoMes, JSON.stringify(futuro));
     }
 }
+
 
 /************************************************
  * ADICIONAR ITENS
@@ -93,10 +92,14 @@ function gerarParcelas(tipo, item) {
 function addCredito() {
     if (!ccDesc.value || !ccValor.value) return;
 
+    const parcelas = Number(ccParcela.value) || 1;
+    const valor = Number(ccValor.value);
+
     const item = {
         desc: ccDesc.value.trim(),
-        valor: Number(ccValor.value),
-        parcela: ccParcela.value.trim()
+        valor: valor,              // 🔥 valor cheio
+        parcelas: parcelas,
+        parcelaAtual: 1
     };
 
     dados.credito.push(item);
@@ -107,13 +110,17 @@ function addCredito() {
     render();
 }
 
+
 function addDemais() {
     if (!dDesc.value || !dValor.value) return;
 
+    const parcelas = Number(dParcela.value) || 1;
+
     const item = {
         desc: dDesc.value.trim(),
-        valor: Number(dValor.value),
-        parcela: dParcela.value.trim()
+        valor: Number(dValor.value), // 🔥 valor cheio
+        parcelas: parcelas,
+        parcelaAtual: 1
     };
 
     dados.demais.push(item);
@@ -123,6 +130,7 @@ function addDemais() {
     salvar();
     render();
 }
+
 
 /************************************************
  * EDITAR / REMOVER
@@ -170,7 +178,10 @@ function render() {
         totalCredito += i.valor;
         htmlCredito += `
             <div class="item">
-                <span>${i.desc} - ${i.valor.toFixed(2)} ${i.parcela || ""}</span>
+                <span>${i.desc} - ${i.valor.toFixed(2)} ${
+    i.parcelas > 1 ? `(${i.parcelaAtual}/${i.parcelas})` : "(À vista)"
+}
+</span>
                 <div class="acoes">
                     <button onclick="editar('credito', ${idx})">✏️</button>
                     <button onclick="remover('credito', ${idx})">❌</button>
@@ -179,18 +190,22 @@ function render() {
         `;
     });
 
-    dados.demais.forEach((i, idx) => {
-        totalDemais += i.valor;
-        htmlDemais += `
-            <div class="item">
-                <span>${i.desc} - ${i.valor.toFixed(2)} ${i.parcela || ""}</span>
-                <div class="acoes">
-                    <button onclick="editar('demais', ${idx})">✏️</button>
-                    <button onclick="remover('demais', ${idx})">❌</button>
-                </div>
+dados.demais.forEach((i, idx) => {
+    totalDemais += i.valor;
+    htmlDemais += `
+        <div class="item">
+            <span>
+                ${i.desc} - ${i.valor.toFixed(2)}
+                ${i.parcelas > 1 ? `(${i.parcelaAtual}/${i.parcelas})` : "(À vista)"}
+            </span>
+            <div class="acoes">
+                <button onclick="editar('demais', ${idx})">✏️</button>
+                <button onclick="remover('demais', ${idx})">❌</button>
             </div>
-        `;
-    });
+        </div>
+    `;
+});
+
 
     listaCredito.innerHTML = htmlCredito;
     listaDemais.innerHTML = htmlDemais;
@@ -291,11 +306,12 @@ function exportarExcel() {
 function limparInputs() {
     ccDesc.value = "";
     ccValor.value = "";
-    ccParcela.value = "";
+    ccParcela.value = "1";
     dDesc.value = "";
     dValor.value = "";
-    dParcela.value = "";
+    dParcela.value = "1";
 }
+
 
 /************************************************
  * EVENTOS
