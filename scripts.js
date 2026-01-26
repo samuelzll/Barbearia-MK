@@ -6,13 +6,13 @@
 
 const SERVICOS = {
     "Corte": { preco: 35, duracao: 30 },
-    "Corte + Sobrancelha": { preco: 40, duracao: 35 },
+    "Corte + Sobrancelha": { preco: 40, duracao: 30 },
     "Barba": { preco: 30, duracao: 30 },
     "Combo Corte + Barba": { preco: 55, duracao: 60 }, // Duração: 60 min (2 slots)
     "Corte + Pigmentação": { preco: 45, duracao: 60 }, // Duração: 60 min (2 slots)
     "Corte + Luzes": { preco: 90, duracao: 60 },       // Duração: 60 min (2 slots)
-    "Nevou": { preco: 110, duracao: 90 },              // Duração: 90 min (3 slots)
-    "Corte + Reflexo": { preco: 100, duracao: 60 }   // Duração: 90 min (3 slots)
+    "Corte + Nevou": { preco: 110, duracao: 90 },      // Duração: 90 min (3 slots)
+    "Corte + Reflexo": { preco: 100, duracao: 60 }   
 };
 
 const ADMIN_PASSWORD = "mkadmin135";
@@ -399,57 +399,57 @@ async function onDataChange() {
 
 /* confirmar agendamento */
 async function onConfirmar(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    
-    if (!await waitForFirebase()) {
-        if (resultadoEl) {
-            resultadoEl.innerText = 'Erro: Falha na conexão com o sistema. Recarregue a página.';
-            resultadoEl.style.color = 'red';
-        }
+    e.preventDefault();
+
+    const nome = nomeInput.value.trim();
+    const telefone = telefoneInput.value.trim();
+    const servico = servicoSelect.value;
+    const barbeiro = barbeiroInput.value.trim();
+    const data = dataInput.value;
+    const hora = horaSelect.value;
+
+    if (!nome || !telefone || !servico || !barbeiro || !data || !hora) {
+        resultadoEl.innerText = 'Preencha todos os campos.';
+        resultadoEl.style.color = 'red';
         return;
     }
 
-    const nome = (nomeInput.value || '').trim();
-    const telefone = (telefoneInput.value || '').trim();
-    const servico = servicoSelect.value;
-    const barbeiro = (barbeiroInput.value || '').trim();
-    const data = dataInput.value;
-    const hora = horaSelect.value;
-    
-    if (!nome || !telefone || !servico || !barbeiro || !data || !hora) {
-        if (resultadoEl) {
-            resultadoEl.innerText = 'Preencha todos os campos.';
-            resultadoEl.style.color = 'red';
-        }
-        return;
-    }
-    
-    const agendamento = { id: gerarId(), nome, telefone, servico, barbeiro, data, hora, criadoEm: new Date().toISOString() };
-    
+    const agendamento = {
+        id: gerarId(),
+        nome,
+        telefone,
+        servico,
+        barbeiro,
+        data,
+        hora,
+        criadoEm: new Date().toISOString()
+    };
+
+    // ✅ ABRE O WHATSAPP DIRETO NO CLIQUE
+    abrirWhatsAppComAgendamento(agendamento);
+
+    // feedback visual
+    resultadoEl.innerText = 'Agendado com sucesso! Abrindo WhatsApp...';
+    resultadoEl.style.color = 'green';
+
+    // 🔥 salva no Firebase depois (pode demorar, não trava o WhatsApp)
     try {
+        await waitForFirebase();
         await salvarAgendamentoFirestore(agendamento);
-        if (resultadoEl) {
-            resultadoEl.innerText = 'Agendado com sucesso! Abrindo WhatsApp...';
-            resultadoEl.style.color = 'green';
-        }
         await renderPainel();
-        await onDataChange(); 
-        setTimeout(() => abrirWhatsAppComAgendamento(agendamento), 500);
+        await onDataChange();
     } catch (err) {
         console.error(err);
-        if (resultadoEl) {
-            resultadoEl.innerText = 'Erro ao salvar agendamento! Verifique o Console (F12) para detalhes.';
-            resultadoEl.style.color = 'red';
-        }
     }
 }
+
 
 function abrirWhatsAppComAgendamento(a) {
     const telefoneBarbearia = "5585988338580";
     const dataBR = new Date(a.data + 'T00:00:00').toLocaleDateString('pt-BR');
     const serv = SERVICOS[a.servico] || { preco: 0, duracao: 0 };
-    
-    const msg = encodeURIComponent(
+
+    const msg =
 `Olá! Gostaria de confirmar meu agendamento:
 Nome: ${a.nome}
 Telefone: ${a.telefone}
@@ -458,9 +458,12 @@ Preço: R$${serv.preco}
 Duração: ${serv.duracao} minutos
 Barbeiro: ${a.barbeiro}
 Data: ${dataBR}
-Horário: ${a.hora}`);
+Horário: ${a.hora}`;
 
-    window.open(`https://wa.me/${telefoneBarbearia}?text=${msg}`, "_blank");
+    const url = `https://wa.me/${telefoneBarbearia}?text=${encodeURIComponent(msg)}`;
+
+    // 🚀 MOBILE SAFE
+    window.location.href = url;
 }
 
 /* painel */
@@ -602,7 +605,6 @@ function initAgendamento() {
 // FUNÇÕES GERAIS (NETWORK DE PARTÍCULAS E START)
 // ===============================================
 
-/* sua função initFundoNetwork (mantida) */
 function initFundoNetwork() {
     (function () {
         const canvas = document.getElementById("fundoParticulas");
@@ -643,33 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initAgendamento();
     initFundoNetwork();
 });
-
-// ===============================================
-// PAINEL ADMINISTRATIVO UNIFICADO (ABRE TUDO)
-// ===============================================
-
-/*window.adminAbrirPainel = function() {
-    const senha = prompt("Senha de administrador:");
-    
-    if (senha === "mkadmin135") {
-        // Localiza os elementos
-        const pAgendamentos = document.getElementById('painelAgendamentos');
-        const pControleDias = document.getElementById('adminBlocker');
-
-        // Abre os dois painéis IMEDIATAMENTE
-        if (pAgendamentos) pAgendamentos.style.display = 'block';
-        if (pControleDias) pControleDias.style.display = 'block';
-
-        // Carrega os dados de ambos do Firebase
-        renderPainel();
-        window.atualizarListaDiasBloqueados();
-        
-        // Rola a tela suavemente para as ferramentas de gestão
-        pControleDias.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        alert("Senha incorreta! Acesso negado.");
-    }
-};*/
 
 // Gerencia a lista visual de dias bloqueados (com o botão verde REMOVER)
 window.atualizarListaDiasBloqueados = async function() {
@@ -776,7 +751,6 @@ window.abrirControleDias = async function () {
 
     painel.style.display = 'block';
 
-    // ✅ ESSA LINHA É A CHAVE DO PROBLEMA
     await window.atualizarListaDiasBloqueados();
 
     painel.scrollIntoView({ behavior: 'smooth' });
