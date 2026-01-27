@@ -187,12 +187,12 @@ p {
 @media screen and (max-width: 900px) {
  
   .informacoes {
-    font-size: 20px;
+    font-size: 18px;
     gap: 10px;
     flex-direction: row;
     text-align: center;
-    margin-top: -65px;
-    margin-right: 40px;
+    margin-left: 0;
+    flex-wrap: wrap;
   }
 
   .titulo {
@@ -345,11 +345,7 @@ p {
   margin-bottom: 8px;
 }
 
-/* --- ESTILO NOVO FORMULÁRIO (sobrepõe o antigo) --- */
-
-/* =============================================== */
 /* ESTILIZAÇÃO PROFISSIONAL DO AGENDAMENTO         */
-/* =============================================== */
 
 /* CONTAINER PRINCIPAL (Barbeiros + Formulário lado a lado) */
 .agendamento-principal-container {
@@ -588,11 +584,8 @@ p {
   margin-bottom: 18px;
 }
 
-/* REMOVIDO ESTILO BARBEIRO-CARD ANTIGO PARA EVITAR CONFLITO */
-
-/* ============================= */
 /* NOVO GRID DA GALERIA DE CORTES */
-/* ============================= */
+
 .galeria-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -627,14 +620,13 @@ p {
 
 #fundoParticulas {
   position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
   top: 0;
   left: 0;
-  width: 100%;
-  background: #0f0f0f;
-  display: block;
+  width: 100vw;
+  height: 100dvh; /* resolve bug do mobile */
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at top, #000000, #000);
 }
 
 /* --- MOSAICO DE CORTES (estilo do exemplo enviado) --- */
