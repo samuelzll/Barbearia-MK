@@ -184,14 +184,13 @@ p {
   height: auto;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 768px) {
  
   .informacoes {
-    font-size: 18px;
+    font-size: 17px;
     gap: 10px;
     flex-direction: row;
     text-align: center;
-    margin-left: 0;
     flex-wrap: wrap;
   }
 
@@ -769,6 +768,24 @@ p {
 @media (max-width: 768px) {
   .admin-wrapper {
     flex-direction: column;
+  }
+
+    header {
+    flex-direction: row;
+    padding: 15px 10px;
+    gap: 10px;
+  }
+
+  .titulo {
+    font-size: 28px;
+    padding: 20px 10px;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .mosaico-cortes .foto {
+    font-size: 80px;
+    margin-left: 20px;
   }
 }
 
